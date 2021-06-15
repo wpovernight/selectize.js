@@ -448,7 +448,9 @@ $.extend(Selectize.prototype, {
 				var pastedText = self.$control_input.val();
 				if(!pastedText.match(self.settings.splitOn)){ return }
 
-				var splitInput = $.trim(pastedText).split(self.settings.splitOn);
+				var splitInput = pastedText
+					.trim()
+					.split(self.settings.splitOn);
 				for (var i = 0, n = splitInput.length; i < n; i++) {
 					self.createItem(splitInput[i]);
 				}
@@ -665,7 +667,7 @@ $.extend(Selectize.prototype, {
 
 			self.isBlurring = false;
 			self.ignoreFocus = false;
-			self.trigger('blur');
+			self.blur();
 		};
 
 		self.isBlurring = true;
@@ -1103,7 +1105,7 @@ $.extend(Selectize.prototype, {
 		}
 
 		var self              = this;
-		var query             = $.trim(self.$control_input.val());
+		var query             = (self.$control_input.val()).trim();
 		var results           = self.search(query);
 		var $dropdown_content = self.$dropdown_content;
 		var active_before     = self.$activeOption && hash_key(self.$activeOption.attr('data-value'));
@@ -1686,7 +1688,7 @@ $.extend(Selectize.prototype, {
 	createItem: function(input, triggerDropdown) {
 		var self  = this;
 		var caret = self.caretPos;
-		input = input || $.trim(self.$control_input.val() || '');
+		input = input || (self.$control_input.val() || '').trim();
 
 		var callback = arguments[arguments.length - 1];
 		if (typeof callback !== 'function') callback = function() {};
@@ -1893,7 +1895,7 @@ $.extend(Selectize.prototype, {
 			// this fixes some weird tabbing behavior in FF and IE.
 			// See #1164
 			if (self.isBlurring) {
-				self.$control_input.blur(); // close keyboard on iOS
+				self.$control_input.trigger('blur'); // close keyboard on iOS
 			}
 		}
 
